@@ -14,9 +14,9 @@
         <!-- Control buttons -->
         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="38.0" prefWidth="600.0" spacing="20.0">
             <children>
-                <Button fx:id="addButton" mnemonicParsing="false" onAction="#addEnvironmentPane" text="Add" />
+                <Button fx:id="addButton" mnemonicParsing="false" onAction="#updateEnvironmentPane" text="Add" />
                 <Button mnemonicParsing="false" onAction="#updateEnvironmentPane" text="Update" />
-                <Button mnemonicParsing="false" onAction="#deleteEnvironmentPane" text="Delete" />
+                <Button mnemonicParsing="false" onAction="#deleteSelectedEnvironment" text="Delete" />
             </children>
         </HBox>
         

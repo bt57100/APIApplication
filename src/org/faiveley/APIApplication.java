@@ -5,6 +5,7 @@ package org.faiveley;
 
 import com.sun.javaws.Main;
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
@@ -13,7 +14,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -30,9 +30,25 @@ import org.faiveley.model.EnvironmentWrapper;
  */
 public class APIApplication extends Application {
 
+    private Stage primaryStage;
     public Preferences prefs = Preferences.userNodeForPackage(APIApplication.class);
     private final ObservableList<Environment> listEnvironnement = FXCollections.observableArrayList();
 
+    
+    
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+
+    public ObservableList<Environment> getListEnvironnement() {
+        return listEnvironnement;
+    }
+    
     /**
      * Start main view
      *
@@ -45,16 +61,8 @@ public class APIApplication extends Application {
             loadDataDirectory(file);
         }
         try {
-            // Charge main view
-            AnchorPane MainView = (AnchorPane) FXMLLoader.load(APIApplication.class.getResource("view/MainView.fxml"));
 
-            // Set up a scene
-            Scene scene = new Scene(MainView, 700, 400);
-
-            // Settings main stage
-            mainStage.setTitle("API Application");
-            mainStage.setScene(scene);
-            mainStage.show();
+            openView("view/MainView.fxml", "API Application");
 
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,6 +115,29 @@ public class APIApplication extends Application {
         }
     }
 
+    public void openView(String viewPath, String viewName) {
+        try {
+            // Hide Delete current DEnvironment view
+            hideCurrentView();
+
+            // Open new view
+            this.primaryStage.setTitle(viewName);
+            this.primaryStage.setScene(new Scene(FXMLLoader.load(APIApplication.class.getResource(viewPath)), 800, 600));
+            this.primaryStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(APIApplication.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Hide Delete Environment View
+     */
+    public void hideCurrentView() {
+        //Hide Delete current DEnvironment view
+        this.primaryStage.getScene().getWindow().hide();
+    }
+
     private void saveEnvironment(File file) throws PropertyException, JAXBException {
         if (listEnvironnement.size() > 0) {
             JAXBContext context = JAXBContext.newInstance(EnvironmentWrapper.class);
@@ -127,10 +158,6 @@ public class APIApplication extends Application {
     public static void main(String[] args) {
         // Launch application
         Application.launch(APIApplication.class, (java.lang.String[]) null);
-    }
-
-    public ObservableList<Environment> getListEnvironnement() {
-        return listEnvironnement;
     }
 
 }

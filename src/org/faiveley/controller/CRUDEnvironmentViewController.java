@@ -3,31 +3,19 @@
  */
 package org.faiveley.controller;
 
-import java.io.IOException;
+import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import org.faiveley.APIApplication;
 import org.faiveley.model.Environment;
-import org.faiveley.xml.CreateXMLFile;
 
 /**
  * Controller Create Read Update Delete Environment view
@@ -36,11 +24,8 @@ import org.faiveley.xml.CreateXMLFile;
  */
 public class CRUDEnvironmentViewController implements Initializable {
 
-    // Position of XML file
-    public String filePath = System.getProperty("user.dir") + "\\src\\org\\faiveley\\environments.xml";
-
-    // Environment List
-    private List<Environment> environmentList;
+    private File file;
+    private APIApplication mainApp;
 
     // Manage environment
     @FXML
@@ -55,11 +40,7 @@ public class CRUDEnvironmentViewController implements Initializable {
     private TableColumn<Environment, String> loginCol;
     @FXML
     private TableColumn<Environment, String> passwordCol;
-    @FXML
-    private Button okManageButton;
 
-    private APIApplication mainApp;
-    
     /**
      * Initialize CRUDEnvironment view
      *
@@ -105,33 +86,9 @@ public class CRUDEnvironmentViewController implements Initializable {
         });
     }
 
-
-    public void setMainApp(APIApplication app){
-        mainApp=app;
+    public void setMainApp(APIApplication app) {
+        mainApp = app;
         this.environmentTable.setItems(mainApp.getListEnvironnement());
-    }
-    
-    /**
-     * Open Create environment pane
-     */
-    @FXML
-    public void addEnvironmentPane() {
-        try {
-            // CUEnvironment view
-            GridPane root = (GridPane) FXMLLoader.load(APIApplication.class.getResource("view/CUEnvironmentView.fxml"));
-
-            // Set up stage
-            Stage stage = new Stage();
-            stage.setTitle("Add Environment");
-            stage.setScene(new Scene(root, 450, 450));
-            stage.show();
-
-            // Hide current CRUDEnvironment view
-            hideCRUDEnvironmentView();
-
-        } catch (IOException ex) {
-            Logger.getLogger(CRUDEnvironmentViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**
@@ -139,45 +96,21 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     @FXML
     public void updateEnvironmentPane() {
-        try {
-            // CUEnvironment view
-            GridPane root = (GridPane) FXMLLoader.load(APIApplication.class.getResource("view/CUEnvironmentView.fxml"));
-
-            // Set up stage
-            Stage stage = new Stage();
-            stage.setTitle("Update Environment");
-            stage.setScene(new Scene(root, 450, 450));
-            stage.show();
-
-            // Hide current CRUDEnvironment view
-            hideCRUDEnvironmentView();
-
-        } catch (IOException ex) {
-            Logger.getLogger(CRUDEnvironmentViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.mainApp.openView("view/CUEnvironmentView.fxml", "Update Environment");
     }
 
     /**
-     * Open Delete environment pane
+     * Delete selected environment
      */
     @FXML
-    public void deleteEnvironmentPane() {
-        try {
-            // DEnvironment view
-            HBox root = (HBox) FXMLLoader.load(APIApplication.class.getResource("view/DEnvironmentView.fxml"));
+    public void deleteSelectedEnvironment() {
+        Environment selectedEnvironment;
+        // Get selected environment
 
-            // Set up stage
-            Stage stage = new Stage();
-            stage.setTitle("Delete Environment");
-            stage.setScene(new Scene(root, 450, 100));
-            stage.show();
-
-            // Hide current CRUDEnvironment view
-            hideCRUDEnvironmentView();
-
-        } catch (IOException ex) {
-            Logger.getLogger(CRUDEnvironmentViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // Delete selected environment
+        //this.mainApp.getListEnvironnement().remove(selectedEnvironment);
+        // Save to file
+        this.mainApp.saveDataToFile(this.file);
     }
 
     /**
@@ -185,32 +118,8 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     @FXML
     public void CRUDEnvironmentCompleted() {
-        try {
-            // Get environment from table view
-            this.environmentList = new ArrayList<>();
-            environmentTable.getItems().stream().forEach((environment) -> {
-                this.environmentList.add(environment);
-            });
-
-            // Create new XML
-            CreateXMLFile xml = new CreateXMLFile();
-            xml.createXMLFile(this.filePath, this.environmentList);
-
-            // Main view
-            AnchorPane MainView = (AnchorPane) FXMLLoader.load(APIApplication.class.getResource("view/MainView.fxml"));
-
-            // Set up stage
-            Stage stage = new Stage();
-            stage.setTitle("API Application");
-            stage.setScene(new Scene(MainView, 700, 400));
-            stage.show();
-
-            // Hide current CRUDEnvironment view
-            hideCRUDEnvironmentView();
-
-        } catch (IOException ex) {
-            Logger.getLogger(CRUDEnvironmentViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.mainApp.saveDataToFile(this.file);
+        this.mainApp.openView("view/MainView.fxml", "API Application");
     }
 
     /**
@@ -218,30 +127,7 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     @FXML
     public void CRUDEnvironmentCancel() {
-        try {
-            // Main view
-            AnchorPane MainView = (AnchorPane) FXMLLoader.load(APIApplication.class.getResource("view/MainView.fxml"));
-
-            // Set up stage
-            Stage stage = new Stage();
-            stage.setTitle("API Application");
-            stage.setScene(new Scene(MainView, 700, 400));
-            stage.show();
-
-            // Hide current CRUDEnvironment view
-            hideCRUDEnvironmentView();
-
-        } catch (IOException ex) {
-            Logger.getLogger(CRUDEnvironmentViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Hide CRUD Environment View
-     */
-    public void hideCRUDEnvironmentView() {
-        // Hide current CRUDEnvironment view
-        this.okManageButton.getScene().getWindow().hide();
+        this.mainApp.openView("view/MainView.fxml", "API Application");
     }
 
 }

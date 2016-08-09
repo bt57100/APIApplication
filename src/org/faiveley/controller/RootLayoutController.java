@@ -1,6 +1,5 @@
 package org.faiveley.controller;
 
-import org.kles.fx.custom.FxUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -23,15 +22,20 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javax.annotation.Resource;
+import org.faiveley.APIApplication;
+import org.faiveley.model.Environment;
 
-import org.kles.MainApp;
+/*import org.kles.MainApp;
+import com.sun.security.ntlm.Server;
+import org.kles.fx.custom.FxUtil;
 import org.kles.model.AbstractDataModel;
 import org.kles.model.Customer;
 import org.kles.model.Developer;
 import org.kles.model.Environment;
 import org.kles.model.Server;
 import org.kles.view.process.M3upgraderLauncherController;
-import resources.Resource;
+import resources.Resource;*/
 
 /**
  * The controller for the root layout. The root layout provides the basic
@@ -40,30 +44,30 @@ import resources.Resource;
  *
  * @author Jérémy Chaut
  */
-public class RootLayoutController {
-
+public class RootLayoutController {}
+/*
     @FXML
     private RadioMenuItem menuFR;
     @FXML
     private RadioMenuItem menuEN;
     @FXML
     private Menu langmenu, skinmenu;
-    private MainApp mainApp;
+    private APIApplication mainApp;
     private Stage customerStage, developerStage, environmentStage, serverStage;
-
+*/
     /**
      * Is called by the main application to give a reference back to itself.
      *
      * @param mainApp
      */
-    public void setMainApp(MainApp mainApp) {
+    /*public void setMainApp(APIApplication mainApp) {
         this.mainApp = mainApp;
         this.mainApp.getListSkin().entrySet().stream().forEach((nameSkin) -> {
             final CheckMenuItem menuItemSkin = new CheckMenuItem(nameSkin.getKey());
             menuItemSkin.setSelected(this.mainApp.prefs.get(MainApp.SKIN, null).equals(nameSkin.getKey()));
             menuItemSkin.setOnAction(e -> {
                 Application.setUserAgentStylesheet(nameSkin.getValue());
-                this.mainApp.prefs.put(MainApp.SKIN, nameSkin.getKey());
+                this.mainApp.prefs.put(APIApplication.SKIN, nameSkin.getKey());
                 skinmenu.getItems().stream().forEach(m -> {
                     ((CheckMenuItem) m).setSelected(m.getText().equals(nameSkin.getKey()));
                 });
@@ -71,19 +75,19 @@ public class RootLayoutController {
             skinmenu.getItems().add(menuItemSkin);
         });
         langmenu.getItems().stream().forEach(m -> {
-            ((RadioMenuItem) m).setSelected(this.mainApp.prefs.get(MainApp.LANGUAGE, null).equals(m.getId()));
+            ((RadioMenuItem) m).setSelected(this.mainApp.prefs.get(APIApplication.LANGUAGE, null).equals(m.getId()));
             m.setOnAction(e -> {
                 Locale.setDefault(new Locale(m.getId()));
-                this.mainApp.prefs.put(MainApp.LANGUAGE, m.getId());
+                this.mainApp.prefs.put(APIApplication.LANGUAGE, m.getId());
                 langmenu.getItems().stream().forEach(m1 -> {
-                    ((RadioMenuItem) m).setSelected(m1.getId().equals(this.mainApp.prefs.get(MainApp.LANGUAGE, null)));
+                    ((RadioMenuItem) m).setSelected(m1.getId().equals(this.mainApp.prefs.get(APIApplication.LANGUAGE, null)));
                 });
                 try {
                     mainApp.getPrimaryStage().close();
                 } catch (Exception ex) {
                     Logger.getLogger(RootLayoutController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                new MainApp().start(new Stage());
+                new APIApplication().start(new Stage());
             });
         });
     }
@@ -91,7 +95,7 @@ public class RootLayoutController {
     /**
      * Creates an empty address book.
      */
-    @FXML
+    /*@FXML
     private void handleNew() {
         mainApp.clearData();
         mainApp.setRegistryFilePath(null);
@@ -100,7 +104,7 @@ public class RootLayoutController {
     /**
      * Opens a FileChooser to let the user select an address book to load.
      */
-    @FXML
+    /*@FXML
     private void handleOpen() {
         DirectoryChooser fileChooser = new DirectoryChooser();
         // Show save file dialog
@@ -115,7 +119,7 @@ public class RootLayoutController {
      * Saves the file to the person file that is currently open. If there is no
      * open file, the "save as" dialog is shown.
      */
-    @FXML
+    /*@FXML
     private void handleSave() {
         File directory = mainApp.getDataDirectoryPath();
         if (directory != null) {
@@ -128,7 +132,7 @@ public class RootLayoutController {
     /**
      * Opens a FileChooser to let the user select a file to save to.
      */
-    @FXML
+    /*@FXML
     private void handleSaveAs() {
         DirectoryChooser fileChooser = new DirectoryChooser();
 
@@ -138,21 +142,21 @@ public class RootLayoutController {
          fileChooser.getExtensionFilters().add(extFilter);
          */
         // Show save file dialog
-        File file = fileChooser.showDialog(mainApp.getPrimaryStage());
+        /*File file = fileChooser.showDialog(mainApp.getPrimaryStage());
 
         if (file != null) {
-            /*// Make sure it has the correct extension
+            /* Make sure it has the correct extension
              if (!file.getPath().endsWith(".xml")) {
              file = new File(file.getPath() + ".xml");
              }*/
-            mainApp.saveDataToFile(file);
+            /*mainApp.saveDataToFile(file);
         }
     }
 
     /**
      * Opens an about dialog.
      */
-    @FXML
+    /*@FXML
     private void handleAbout() {
         FxUtil.showAlert(Alert.AlertType.INFORMATION, mainApp.getResourceMessage().getString("about.title"), String.format(mainApp.getResourceMessage().getString("about.header"), Resource.VERSION), String.format(mainApp.getResourceMessage().getString("about.text"), Resource.VERSION));
     }
@@ -160,7 +164,7 @@ public class RootLayoutController {
     /**
      * Closes the application.
      */
-    @FXML
+    /*@FXML
     private void handleExit() {
         System.exit(0);
     }
@@ -173,11 +177,11 @@ public class RootLayoutController {
      * @param model the datamodel object to be edited
      * @return true if the user clicked OK, false otherwise.
      */
-    public boolean showDataModelEditDialog(AbstractDataModel model) {
+    /*public boolean showDataModelEditDialog(AbstractDataModel model) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(ResourceBundle.getBundle("resources.language", mainApp.getLocale()));
-            loader.setLocation(MainApp.class.getResource("view/" + model.datamodelName() + "EditDialog.fxml"));
+            loader.setLocation(APIApplication.class.getResource("view/" + model.datamodelName() + "EditDialog.fxml"));
             Parent page = loader.load();
 
             Stage dialogStage = new Stage();
@@ -203,7 +207,7 @@ public class RootLayoutController {
              dialogStage.setMinWidth(undecorator.getMinWidth());
              dialogStage.setMinHeight(undecorator.getMinHeight());
              */
-            AbstractDataModelEditController controller = loader.getController();
+            /*AbstractDataModelEditController controller = loader.getController();
             controller.setMainApp(mainApp);
             controller.setDialogStage(dialogStage);
             controller.setDataModel(model);
@@ -211,7 +215,6 @@ public class RootLayoutController {
 
             return controller.isOkClicked();
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -220,7 +223,7 @@ public class RootLayoutController {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(ResourceBundle.getBundle("resources.language", mainApp.getLocale()));
-            loader.setLocation(MainApp.class.getResource("view/" + model.datamodelName() + "EditDialog.fxml"));
+            loader.setLocation(APIApplication.class.getResource("view/" + model.datamodelName() + "EditDialog.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             Stage dialogStage = new Stage();
@@ -246,13 +249,12 @@ public class RootLayoutController {
              dialogStage.setMinWidth(undecorator.getMinWidth());
              dialogStage.setMinHeight(undecorator.getMinHeight());
              */
-            AbstractDataModelEditController controller = loader.getController();
+            /*AbstractDataModelEditController controller = loader.getController();
             controller.setMainApp(mainApp);
             controller.setDialogStage(dialogStage);
             controller.setDataModel(model);
             return controller;
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -261,7 +263,7 @@ public class RootLayoutController {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(ResourceBundle.getBundle("resources.language", mainApp.getLocale()));
-            loader.setLocation(MainApp.class.getResource("view/" + datamodel + "Overview.fxml"));
+            loader.setLocation(APIApplication.class.getResource("view/" + datamodel + "Overview.fxml"));
             AnchorPane modelManagerOverview = (AnchorPane) loader.load();
 
             Stage stage = new Stage();
@@ -282,13 +284,12 @@ public class RootLayoutController {
              }
              });*/
 
-            ModelManagerTableViewController controller = loader.getController();
+            /*ModelManagerTableViewController controller = loader.getController();
             controller.setMainApp(mainApp);
 
             stage.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -296,7 +297,7 @@ public class RootLayoutController {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(ResourceBundle.getBundle("resources.language", mainApp.getLocale()));
-            loader.setLocation(MainApp.class.getResource("view/" + datamodel + "CustomerTableView.fxml"));
+            loader.setLocation(APIApplication.class.getResource("view/" + datamodel + "CustomerTableView.fxml"));
             VBox modelManagerOverview = (VBox) loader.load();
 
             Stage stage = new Stage();
@@ -322,7 +323,7 @@ public class RootLayoutController {
              stage.setMinHeight(undecorator.getMinHeight());
              */
 
-            ModelManagerTableViewCustomerController controller = loader.getController();
+            /*ModelManagerTableViewCustomerController controller = loader.getController();
             controller.setModelName(datamodel);
             controller.setMainApp(mainApp);
             controller.setStage(stage);
@@ -330,7 +331,6 @@ public class RootLayoutController {
             stage.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -370,11 +370,11 @@ public class RootLayoutController {
      * @param developer the developer object to be edited
      * @return true if the user clicked OK, false otherwise.
      */
-    public boolean showDeveloperEditDialog(Developer developer) {
+    /*public boolean showDeveloperEditDialog(Developer developer) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(ResourceBundle.getBundle("resources.language", mainApp.getLocale()));
-            loader.setLocation(MainApp.class.getResource("view/DeveloperEditDialog.fxml"));
+            loader.setLocation(APIApplication.class.getResource("view/DeveloperEditDialog.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             Stage dialogStage = new Stage();
@@ -394,7 +394,6 @@ public class RootLayoutController {
 
             return controller.isOkClicked();
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -407,11 +406,11 @@ public class RootLayoutController {
      * @param environment the environment object to be edited
      * @return true if the user clicked OK, false otherwise.
      */
-    public boolean showEnvironmentEditDialog(Environment environment) {
+    /*public boolean showEnvironmentEditDialog(Environment environment) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(ResourceBundle.getBundle("resources.language", mainApp.getLocale()));
-            loader.setLocation(MainApp.class.getResource("view/EnvironmentEditDialog.fxml"));
+            loader.setLocation(APIApplication.class.getResource("view/EnvironmentEditDialog.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             Stage dialogStage = new Stage();
@@ -429,7 +428,6 @@ public class RootLayoutController {
 
             return controller.isOkClicked();
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -442,11 +440,11 @@ public class RootLayoutController {
      * @param customer the customer object to be edited
      * @return true if the user clicked OK, false otherwise.
      */
-    public boolean showCustomerEditDialog(Customer customer) {
+    /*public boolean showCustomerEditDialog(Customer customer) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(ResourceBundle.getBundle("resources.language", mainApp.getLocale()));
-            loader.setLocation(MainApp.class.getResource("view/CustomerEditDialog.fxml"));
+            loader.setLocation(APIApplication.class.getResource("view/CustomerEditDialog.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             Stage dialogStage = new Stage();
@@ -464,7 +462,6 @@ public class RootLayoutController {
 
             return controller.isOkClicked();
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -473,7 +470,7 @@ public class RootLayoutController {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(ResourceBundle.getBundle("resources.language", mainApp.getLocale()));
-            loader.setLocation(MainApp.class.getResource("view/CustomerHeader.fxml"));
+            loader.setLocation(APIApplication.class.getResource("view/CustomerHeader.fxml"));
             VBox header = (VBox) loader.load();
 
             customerStage = new Stage();
@@ -490,7 +487,6 @@ public class RootLayoutController {
             customerStage.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -502,11 +498,11 @@ public class RootLayoutController {
      * @param server the server object to be edited
      * @return true if the user clicked OK, false otherwise.
      */
-    public boolean showServerEditDialog(Server server) {
+    /*public boolean showServerEditDialog(Server server) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(ResourceBundle.getBundle("resources.language", mainApp.getLocale()));
-            loader.setLocation(MainApp.class.getResource("view/ServerEditDialog.fxml"));
+            loader.setLocation(APIApplication.class.getResource("view/ServerEditDialog.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             Stage dialogStage = new Stage();
@@ -524,7 +520,6 @@ public class RootLayoutController {
 
             return controller.isOkClicked();
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -533,7 +528,7 @@ public class RootLayoutController {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(ResourceBundle.getBundle("resources.language", mainApp.getLocale()));
-            loader.setLocation(MainApp.class.getResource("view/process/M3UpgraderLauncherView.fxml"));
+            loader.setLocation(APIApplication.class.getResource("view/process/M3UpgraderLauncherView.fxml"));
             VBox m3upgraderLauncherView = (VBox) loader.load();
 
             Stage stage = new Stage(StageStyle.UNIFIED);
@@ -551,7 +546,6 @@ public class RootLayoutController {
             stage.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
-}
+}*/
