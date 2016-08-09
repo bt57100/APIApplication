@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,7 +28,6 @@ import javafx.util.converter.IntegerStringConverter;
 import org.faiveley.APIApplication;
 import org.faiveley.model.Environment;
 import org.faiveley.xml.CreateXMLFile;
-import org.faiveley.xml.ReadXMLFile;
 
 /**
  * Controller Create Read Update Delete Environment view
@@ -61,6 +58,8 @@ public class CRUDEnvironmentViewController implements Initializable {
     @FXML
     private Button okManageButton;
 
+    private APIApplication mainApp;
+    
     /**
      * Initialize CRUDEnvironment view
      *
@@ -69,25 +68,6 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Charge table view
-        tableViewInit();
-    }
-
-    /**
-     * Charge tableView from xml file
-     */
-    public void tableViewInit() {
-        // Read from XML
-        ReadXMLFile xml = new ReadXMLFile();
-        List<Environment> envList = new ArrayList<>();
-        xml.readXMLFile(this.filePath, envList);
-
-        // Prepare data for tableView
-        ObservableList<Environment> data = FXCollections.observableArrayList();
-        envList.stream().forEach((env) -> {
-            data.add(new Environment(env.getName(), env.getHost(), env.getPort(), env.getLogin(), env.getPassword()));
-        });
-
         /* Set format of data */
         // Name
         this.nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -123,11 +103,14 @@ public class CRUDEnvironmentViewController implements Initializable {
         this.passwordCol.setOnEditCommit((CellEditEvent<Environment, String> changedPassword) -> {
             ((Environment) changedPassword.getTableView().getItems().get(changedPassword.getTablePosition().getRow())).setPassword(changedPassword.getNewValue());
         });
-
-        // Set to tableView
-        this.environmentTable.setItems(data);
     }
 
+
+    public void setMainApp(APIApplication app){
+        mainApp=app;
+        this.environmentTable.setItems(mainApp.getListEnvironnement());
+    }
+    
     /**
      * Open Create environment pane
      */
