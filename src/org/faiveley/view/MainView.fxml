@@ -11,29 +11,29 @@
    <children>
        
        <!-- Environment pane -->
-      <HBox fx:id="connectionPane" layoutX="72.0" layoutY="34.0" prefHeight="44.0" prefWidth="456.0" AnchorPane.bottomAnchor="325.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0">
+      <HBox fx:id="connectionPane" alignment="CENTER" layoutY="14.0" prefHeight="45.0" prefWidth="600.0" spacing="25.0" AnchorPane.bottomAnchor="341.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
          <children>
              
              <!-- Environments -->
             <Label prefHeight="25.0" prefWidth="81.0" text="Environment :">
                <HBox.margin>
-                  <Insets left="50.0" right="5.0" top="10.0" />
+                  <Insets />
                </HBox.margin>
             </Label>
             <ChoiceBox fx:id="environmentList" prefWidth="150.0">
                <HBox.margin>
-                  <Insets left="5.0" right="20.0" top="10.0" />
+                  <Insets />
                </HBox.margin>
             </ChoiceBox>
             <!-- Control buttons -->
             <Button fx:id="connectButtonId" mnemonicParsing="false" onAction="#connectToM3" text="Connect">
                <HBox.margin>
-                  <Insets left="10.0" right="20.0" top="10.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
             <Button fx:id="changeEnvironmentButton" mnemonicParsing="false" onAction="#changeEnvironment" text="...">
                <HBox.margin>
-                  <Insets left="10.0" top="10.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
             
@@ -41,30 +41,30 @@
       </HBox>
       
       <!-- API/Transactions pane -->
-      <HBox fx:id="apisTransactionsPane" layoutX="50.0" layoutY="85.0" prefHeight="44.0" prefWidth="504.0" AnchorPane.bottomAnchor="275.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="80.0">
+      <HBox fx:id="apisTransactionsPane" alignment="CENTER" layoutY="85.0" prefHeight="45.0" prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="275.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
          <children>
              
              <!-- APIs -->
             <Label prefHeight="25.0" prefWidth="30.0" text="API :">
                <HBox.margin>
-                  <Insets left="40.0" right="5.0" top="10.0" />
+                  <Insets right="5.0" />
                </HBox.margin>
             </Label>
             <ChoiceBox fx:id="api" prefHeight="25.0" prefWidth="100.0">
                <HBox.margin>
-                  <Insets left="5.0" right="45.0" top="10.0" />
+                  <Insets right="45.0" />
                </HBox.margin>
             </ChoiceBox>
             
             <!-- Transactions -->
             <Label prefHeight="25.0" prefWidth="73.0" text="Transaction :">
                <HBox.margin>
-                  <Insets left="45.0" right="5.0" top="10.0" />
+                  <Insets right="5.0" />
                </HBox.margin>
             </Label>
             <ChoiceBox fx:id="transaction" prefHeight="25.0" prefWidth="100.0">
                <HBox.margin>
-                  <Insets left="5.0" top="10.0" />
+                  <Insets />
                </HBox.margin>
             </ChoiceBox>
             
@@ -75,7 +75,7 @@
       <StackPane fx:id="entriesPane" layoutX="14.0" layoutY="148.0" prefHeight="223.0" prefWidth="233.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="150.0" />
 
       <!-- Lod pane -->
-      <StackPane fx:id="logPane" layoutX="300.0" layoutY="149.0" prefHeight="223.0" prefWidth="233.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="150.0">
+      <StackPane fx:id="logPane" alignment="BOTTOM_LEFT" layoutX="300.0" layoutY="149.0" prefHeight="223.0" prefWidth="233.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="150.0">
          <children>
              
              <!-- Logs -->
@@ -84,7 +84,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </StackPane.margin>
             </Label>
-            <TextField fx:id="logText1" prefHeight="165.0" prefWidth="269.0" StackPane.alignment="TOP_LEFT">
+            <TextField fx:id="logText1" disable="true" maxWidth="-Infinity" prefHeight="165.0" prefWidth="269.0" StackPane.alignment="TOP_LEFT">
                <StackPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="40.0" />
                </StackPane.margin>

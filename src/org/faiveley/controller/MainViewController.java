@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.faiveley.APIApplication;
 import org.faiveley.model.Environment;
 
@@ -27,7 +28,7 @@ public class MainViewController implements Initializable {
 
     // Environment
     @FXML
-    private ChoiceBox<Environment> environmentList;
+    private ChoiceBox<String> environmentList;
     @FXML
     private Button connectButtonId;
 
@@ -36,12 +37,30 @@ public class MainViewController implements Initializable {
     private TextField logText;
 
     /**
+     * Constructor
+     */
+    public MainViewController() {
+    }
+
+    /**
      * Set mainApp
-     * 
+     *
      * @param app API application to set
      */
     public void setMainApp(APIApplication app) {
         this.mainApp = app;
+        mainApp.getListEnvironnement().stream().forEach((environment) -> {
+            this.environmentList.getItems().add(environment.getName());
+        });
+    }
+    
+    /**
+     * Set mainApp
+     *
+     * @param stage stage to set
+     */
+    public void setStage(Stage stage) {
+        this.mainApp.setPrimaryStage(stage);
     }
     
     /**
@@ -53,9 +72,6 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Set all environment in choice box
-        this.mainApp.getListEnvironnement().stream().forEach((environment) -> {
-            this.environmentList.getItems().add(environment);
-        });
     }
 
     /**
@@ -72,7 +88,7 @@ public class MainViewController implements Initializable {
     @FXML
     public void changeEnvironment() {
         // Change view
-        this.mainApp.openView("view/CRUDEnvironmentView.fxml", "Environment Manager");
+        this.mainApp.openCRUDEnvironmentView();
     }
 
 }

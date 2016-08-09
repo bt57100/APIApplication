@@ -8,20 +8,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.faiveley.controller.CRUDEnvironmentViewController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="15.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.faiveley.controller.CRUDEnvironmentViewController">
 
     <children>
         <!-- Control buttons -->
-        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="38.0" prefWidth="600.0" spacing="20.0">
+        <HBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="38.0" prefWidth="600.0" spacing="20.0">
             <children>
                 <Button fx:id="addButton" mnemonicParsing="false" onAction="#updateEnvironmentPane" text="Add" />
-                <Button mnemonicParsing="false" onAction="#updateEnvironmentPane" text="Update" />
                 <Button mnemonicParsing="false" onAction="#deleteSelectedEnvironment" text="Delete" />
             </children>
         </HBox>
         
         <!-- Table view to display environments -->
-        <TableView fx:id="environmentTable" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="392.0" prefWidth="600.0" tableMenuButtonVisible="true">
+        <TableView fx:id="environmentTable" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="357.0" prefWidth="600.0" tableMenuButtonVisible="true">
             <columns>
                 <TableColumn fx:id="nameCol" prefWidth="100.0" text="Name" />
                 <TableColumn fx:id="hostCol" prefWidth="100.0" text="Host" />
@@ -50,5 +49,8 @@
         </HBox>
         
     </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
     
 </VBox>

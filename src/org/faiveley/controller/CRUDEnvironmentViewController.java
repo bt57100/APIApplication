@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
@@ -25,7 +26,6 @@ import org.faiveley.model.Environment;
  */
 public class CRUDEnvironmentViewController implements Initializable {
 
-    private File file;
     private APIApplication mainApp;
 
     // Manage environment
@@ -42,6 +42,11 @@ public class CRUDEnvironmentViewController implements Initializable {
     @FXML
     private TableColumn<Environment, String> passwordCol;
 
+    /**
+     * Constructor
+     */
+    public CRUDEnvironmentViewController() {
+    }
     
     /**
      * Set mainApp and table view
@@ -50,7 +55,7 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     public void setMainApp(APIApplication app) {
         // Set mainApp
-        mainApp = app;
+        this.mainApp = app;
         
         // Set table view
         this.environmentTable.setItems(mainApp.getListEnvironnement());
@@ -99,6 +104,9 @@ public class CRUDEnvironmentViewController implements Initializable {
         this.passwordCol.setOnEditCommit((CellEditEvent<Environment, String> changedPassword) -> {
             ((Environment) changedPassword.getTableView().getItems().get(changedPassword.getTablePosition().getRow())).setPassword(changedPassword.getNewValue());
         });
+        
+        // Enable multiple selection
+        this.environmentTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     /**
@@ -106,7 +114,7 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     @FXML
     public void updateEnvironmentPane() {
-        this.mainApp.openView("view/CUEnvironmentView.fxml", "Update Environment");
+        this.mainApp.openAddEnvironmentView();
     }
 
     /**
@@ -120,8 +128,6 @@ public class CRUDEnvironmentViewController implements Initializable {
         // Delete selected environment
         this.mainApp.getListEnvironnement().removeAll(selectedEnvironments);
         
-        // Save to file
-        this.mainApp.saveDataToFile(this.file);
     }
 
     /**
@@ -129,11 +135,10 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     @FXML
     public void CRUDEnvironmentCompleted() {
-        // Save to file
-        this.mainApp.saveDataToFile(this.file);
         
         // Change view
-        this.mainApp.openView("view/MainView.fxml", "API Application");
+        this.mainApp.getPrimaryStage().close();
+        this.mainApp.openMainView();
     }
 
     /**
@@ -142,7 +147,8 @@ public class CRUDEnvironmentViewController implements Initializable {
     @FXML
     public void CRUDEnvironmentCancel() {
         // Change view
-        this.mainApp.openView("view/MainView.fxml", "API Application");
+        this.mainApp.getPrimaryStage().close();
+        this.mainApp.openMainView();
     }
 
 }

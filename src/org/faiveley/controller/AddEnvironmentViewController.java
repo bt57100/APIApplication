@@ -32,6 +32,12 @@ public class AddEnvironmentViewController {
     private TextField newPassword;
 
     /**
+     * Constructor
+     */
+    public AddEnvironmentViewController() {
+    }
+    
+    /**
      * Set mainApp
      * 
      * @param app API application to set
@@ -49,19 +55,21 @@ public class AddEnvironmentViewController {
         this.mainApp.loadDataDirectory(this.file);
         
         // Add new
-        this.mainApp.getListEnvironnement().add(new Environment(
-                this.newName.getText(),
-                this.newHost.getText(),
-                Integer.parseInt(this.newPort.getText()),
-                this.newLogin.getText(),
-                this.newPassword.getText())
-        );
+        if((!"".equals(this.newName.getText()))&&(!"".equals(this.newPort.getText()))) {
+            this.mainApp.getListEnvironnement().add(new Environment(
+                    this.newName.getText(),
+                    this.newHost.getText(),
+                    Integer.parseInt(this.newPort.getText()),
+                    this.newLogin.getText(),
+                    this.newPassword.getText())
+            );
+        }
 
         // Save
         this.mainApp.saveDataToFile(this.file);
 
         // Change view
-        this.mainApp.openView("view/CRUDEnvironmentView.fxml", "Environment Manager");
+        this.mainApp.openCRUDEnvironmentView();
 
     }
 
@@ -71,7 +79,7 @@ public class AddEnvironmentViewController {
     @FXML
     public void CUEnvironmentCancel() {
         // Change view
-        this.mainApp.openView("view/CRUDEnvironmentView.fxml", "Environment Manager");
+        this.mainApp.openCRUDEnvironmentView();
     }
 
 }
