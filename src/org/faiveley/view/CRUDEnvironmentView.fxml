@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.faiveley.controller.CRUDEnvironmentViewController">
+
+    <children>
+        <!-- Control buttons -->
+        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="38.0" prefWidth="600.0" spacing="20.0">
+            <children>
+                <Button fx:id="addButton" mnemonicParsing="false" onAction="#addEnvironmentPane" text="Add" />
+                <Button mnemonicParsing="false" onAction="#updateEnvironmentPane" text="Update" />
+                <Button mnemonicParsing="false" onAction="#deleteEnvironmentPane" text="Delete" />
+            </children>
+        </HBox>
+        
+        <!-- Table view to display environments -->
+        <TableView fx:id="environmentTable" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="392.0" prefWidth="600.0" tableMenuButtonVisible="true">
+            <columns>
+                <TableColumn fx:id="nameCol" prefWidth="100.0" text="Name" />
+                <TableColumn fx:id="hostCol" prefWidth="100.0" text="Host" />
+                <TableColumn fx:id="portCol" prefWidth="100.0" text="Port" />
+                <TableColumn fx:id="loginCol" prefWidth="100.0" text="Login" />
+                <TableColumn fx:id="passwordCol" prefWidth="100.0" text="Password" />
+            </columns>
+            <contextMenu>
+                <ContextMenu>
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                </ContextMenu>
+            </contextMenu>
+        </TableView>
+        
+        <!-- Control buttons -->
+        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <children>
+                <Button fx:id="okManageButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#CRUDEnvironmentCompleted" text="OK" textAlignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#CRUDEnvironmentCancel" text="Cancel" />
+            </children>
+            <padding>
+                <Insets right="40.0" />
+            </padding>
+        </HBox>
+        
+    </children>
+    
+</VBox>

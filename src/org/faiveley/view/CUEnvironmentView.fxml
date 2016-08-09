@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane hgap="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.faiveley.controller.CUEnvironmentViewController">
+    
+    <!-- General settings -->
+    <columnConstraints>
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="168.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="432.0" minWidth="10.0" prefWidth="432.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="-Infinity" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <padding>
+        <Insets top="10.0" />
+    </padding>
+    
+    <!-- Components -->
+    <children>
+        <!-- Name to add/update -->
+        <Label text="Name :" />
+        <TextField fx:id="newName" GridPane.columnIndex="1">
+            <GridPane.margin>
+                <Insets left="20.0" right="100.0" />
+            </GridPane.margin>
+        </TextField>
+        
+        <!-- Host to add/update -->
+        <Label text="Host :" GridPane.rowIndex="1" />
+        <TextField fx:id="newHost" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets left="20.0" right="100.0" />
+            </GridPane.margin>
+        </TextField>
+        
+        <!-- Port to add/update -->
+        <Label text="Port :" GridPane.rowIndex="2" />
+        <TextField fx:id="newPort" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <GridPane.margin>
+                <Insets left="20.0" right="100.0" />
+            </GridPane.margin>
+        </TextField>
+        
+        <!-- Login to add/update -->
+        <Label text="Login :" GridPane.rowIndex="3" />
+        <TextField fx:id="newLogin" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <GridPane.margin>
+                <Insets left="20.0" right="100.0" />
+            </GridPane.margin>
+        </TextField>
+        
+        <!-- Password to add/update -->
+        <Label text="Password :" GridPane.rowIndex="4" />
+        <TextField fx:id="newPassword" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <GridPane.margin>
+                <Insets left="20.0" right="100.0" />
+            </GridPane.margin>
+        </TextField>
+        
+        <!-- Control buttons -->
+        <HBox alignment="CENTER_RIGHT" prefHeight="32.0" prefWidth="600.0" spacing="20.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
+            <children>
+                <Button fx:id="okAddButton" mnemonicParsing="false" onAction="#CUEnvironmentCompleted" text="OK" />
+                <Button mnemonicParsing="false" onAction="#CUEnvironmentCancel" text="Cancel">
+                    <HBox.margin>
+                        <Insets right="30.0" />
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+        
+    </children>
+    
+</GridPane>
