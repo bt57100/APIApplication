@@ -32,45 +32,46 @@ public class APIApplication extends Application {
 
     private Stage primaryStage;
     public Preferences prefs = Preferences.userNodeForPackage(APIApplication.class);
-    private final ObservableList<Environment> listEnvironnement = FXCollections.observableArrayList();
+    private final ObservableList<Environment> listEnvironment = FXCollections.observableArrayList();
 
     
-    
+    /**
+     * Get current stage
+     * 
+     * @return current stage
+     */
     public Stage getPrimaryStage() {
         return primaryStage;
     }
 
+    /**
+     * Set current stage
+     * 
+     * @param primaryStage stage to set
+     */
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-
-    public ObservableList<Environment> getListEnvironnement() {
-        return listEnvironnement;
-    }
-    
     /**
-     * Start main view
-     *
-     * @param mainStage main stage
+     * Get all environment list
+     * 
+     * @return all environment list
      */
-    @Override
-    public void start(Stage mainStage) {
-        File file = getDataDirectoryPath();
-        if (file != null) {
-            loadDataDirectory(file);
-        }
-        try {
-
-            openView("view/MainView.fxml", "API Application");
-
-        } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public ObservableList<Environment> getListEnvironnement() {
+        return listEnvironment;
     }
 
+    /**
+     * Get file from pref file path
+     * 
+     * @return file of pref file path
+     */
     public File getDataDirectoryPath() {
+        // Get file path from pref
         String filePath = prefs.get("filePath", null);
+        
+        // Return file if found
         if (filePath != null) {
             return new File(filePath);
         } else {
@@ -78,7 +79,13 @@ public class APIApplication extends Application {
         }
     }
 
+    /**
+     * Set file path in pref
+     * 
+     * @param file file to get path from
+     */
     public void setRegistryFilePath(File file) {
+        // If file found set path
         if (file != null) {
             prefs.put("filePath", file.getPath());
         } else {
@@ -86,35 +93,90 @@ public class APIApplication extends Application {
         }
     }
 
+    /**
+     * Load data from file in the given directory according to wrapper
+     * 
+     * @param directory directory of the file to retrieve data from
+     */
     public void loadDataDirectory(File directory) {
+        // Context
         JAXBContext context;
+        
+        // Reader
         Unmarshaller um;
         try {
             if (directory.exists() && directory.isDirectory()) {
+                // All files in directory
                 File[] listFile = directory.listFiles();
                 for (File f : listFile) {
                     if (f.getName().startsWith("environment")) {
+                        // Context
                         context = JAXBContext.newInstance(EnvironmentWrapper.class);
+                        
+                        // Reader
                         um = context.createUnmarshaller();
                         EnvironmentWrapper wrapper = (EnvironmentWrapper) um.unmarshal(f);
-                        listEnvironnement.clear();
-                        listEnvironnement.addAll(wrapper.getEnvironments());
+                        
+                        // Add all environment found
+                        listEnvironment.clear();
+                        listEnvironment.addAll(wrapper.getEnvironments());
                     }
                 }
             }
+            // Set path in pref
             setRegistryFilePath(directory);
         } catch (Exception e) {
         }
     }
 
+    /**
+     * Save data in file
+     * 
+     * @param file 
+     */
     public void saveDataToFile(File file) {
         try {
+            // Save environment
             saveEnvironment(file);
+            
+            // Set path in pref
             setRegistryFilePath(file);
         } catch (Exception e) {
         }
     }
 
+    /**
+     * Save environment in XML file
+     * 
+     * @param file file to save in
+     * @throws PropertyException Property Exception
+     * @throws JAXBException JAXB Exception 
+     */
+    private void saveEnvironment(File file) throws PropertyException, JAXBException {
+        if (listEnvironment.size() > 0) {
+            // Contexte
+            JAXBContext context = JAXBContext.newInstance(EnvironmentWrapper.class);
+            
+            // Writter
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            
+            // Wrapper
+            EnvironmentWrapper wrapper = new EnvironmentWrapper();
+            wrapper.setEnvironments(listEnvironment);
+            
+            // Write data in file
+            File fileData = new File(file.getAbsoluteFile() + System.getProperty("file.separator") + "environment.xml");
+            m.marshal(wrapper, fileData);
+        }
+    }
+
+    /**
+     * Close current view and open a new one
+     * 
+     * @param viewPath path to view to open
+     * @param viewName window title
+     */
     public void openView(String viewPath, String viewName) {
         try {
             // Hide Delete current DEnvironment view
@@ -129,6 +191,25 @@ public class APIApplication extends Application {
             Logger.getLogger(APIApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Start main view and charge XML file
+     *
+     * @param mainStage main stage
+     */
+    @Override
+    public void start(Stage mainStage) {
+        // Get file path
+        File file = getDataDirectoryPath();
+        
+        // Get data if file found
+        if (file != null) {
+            loadDataDirectory(file);
+        }
+        
+        // Open main view
+        openView("view/MainView.fxml", "API Application");
+    }
 
     /**
      * Hide Delete Environment View
@@ -137,19 +218,6 @@ public class APIApplication extends Application {
         //Hide Delete current DEnvironment view
         this.primaryStage.getScene().getWindow().hide();
     }
-
-    private void saveEnvironment(File file) throws PropertyException, JAXBException {
-        if (listEnvironnement.size() > 0) {
-            JAXBContext context = JAXBContext.newInstance(EnvironmentWrapper.class);
-            Marshaller m = context.createMarshaller();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            EnvironmentWrapper wrapper = new EnvironmentWrapper();
-            wrapper.setEnvironments(listEnvironnement);
-            File fileData = new File(file.getAbsoluteFile() + System.getProperty("file.separator") + "environment.xml");
-            m.marshal(wrapper, fileData);
-        }
-    }
-
     /**
      * Main launch application
      *

@@ -20,7 +20,7 @@ import org.faiveley.model.Environment;
  */
 public class MainViewController implements Initializable {
 
-    private APIApplication apiApplication;
+    private APIApplication mainApp;
 
     // Selected Environment
     private Environment currentEnvironment;
@@ -36,6 +36,15 @@ public class MainViewController implements Initializable {
     private TextField logText;
 
     /**
+     * Set mainApp
+     * 
+     * @param app API application to set
+     */
+    public void setMainApp(APIApplication app) {
+        this.mainApp = app;
+    }
+    
+    /**
      * Initialize main view parameters
      *
      * @param url url
@@ -43,7 +52,8 @@ public class MainViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.apiApplication.getListEnvironnement().stream().forEach((environment) -> {
+        // Set all environment in choice box
+        this.mainApp.getListEnvironnement().stream().forEach((environment) -> {
             this.environmentList.getItems().add(environment);
         });
     }
@@ -61,7 +71,8 @@ public class MainViewController implements Initializable {
      */
     @FXML
     public void changeEnvironment() {
-        this.apiApplication.openView("view/CRUDEnvironmentView.fxml", "Environment Manager");
+        // Change view
+        this.mainApp.openView("view/CRUDEnvironmentView.fxml", "Environment Manager");
     }
 
 }

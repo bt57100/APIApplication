@@ -10,11 +10,11 @@ import org.faiveley.APIApplication;
 import org.faiveley.model.Environment;
 
 /**
- * Controller Create Update Environment view
+ * Controller : create and add environment in AddEnvironmentView
  *
  * @author 813308
  */
-public class UpdateEnvironmentViewController {
+public class AddEnvironmentViewController {
 
     File file;
     APIApplication mainApp;
@@ -32,11 +32,23 @@ public class UpdateEnvironmentViewController {
     private TextField newPassword;
 
     /**
+     * Set mainApp
+     * 
+     * @param app API application to set
+     */
+    public void setMainApp(APIApplication app) {
+        this.mainApp = app;
+    }
+    
+    /**
      * Save change Close CU environment view and open CRUD environment view
      */
     @FXML
     public void CUEnvironmentCompleted() {
-
+        // Charge
+        this.mainApp.loadDataDirectory(this.file);
+        
+        // Add new
         this.mainApp.getListEnvironnement().add(new Environment(
                 this.newName.getText(),
                 this.newHost.getText(),
@@ -45,8 +57,10 @@ public class UpdateEnvironmentViewController {
                 this.newPassword.getText())
         );
 
+        // Save
         this.mainApp.saveDataToFile(this.file);
 
+        // Change view
         this.mainApp.openView("view/CRUDEnvironmentView.fxml", "Environment Manager");
 
     }
@@ -56,6 +70,7 @@ public class UpdateEnvironmentViewController {
      */
     @FXML
     public void CUEnvironmentCancel() {
+        // Change view
         this.mainApp.openView("view/CRUDEnvironmentView.fxml", "Environment Manager");
     }
 

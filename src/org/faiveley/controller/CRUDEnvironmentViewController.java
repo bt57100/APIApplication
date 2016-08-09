@@ -5,6 +5,7 @@ package org.faiveley.controller;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,7 +19,7 @@ import org.faiveley.APIApplication;
 import org.faiveley.model.Environment;
 
 /**
- * Controller Create Read Update Delete Environment view
+ * Controller Create Read Update Delete environment in CRUDEnvironmentView
  *
  * @author 813308
  */
@@ -41,6 +42,20 @@ public class CRUDEnvironmentViewController implements Initializable {
     @FXML
     private TableColumn<Environment, String> passwordCol;
 
+    
+    /**
+     * Set mainApp and table view
+     * 
+     * @param app API application to set
+     */
+    public void setMainApp(APIApplication app) {
+        // Set mainApp
+        mainApp = app;
+        
+        // Set table view
+        this.environmentTable.setItems(mainApp.getListEnvironnement());
+    }
+    
     /**
      * Initialize CRUDEnvironment view
      *
@@ -86,11 +101,6 @@ public class CRUDEnvironmentViewController implements Initializable {
         });
     }
 
-    public void setMainApp(APIApplication app) {
-        mainApp = app;
-        this.environmentTable.setItems(mainApp.getListEnvironnement());
-    }
-
     /**
      * Open Update environment pane
      */
@@ -104,11 +114,12 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     @FXML
     public void deleteSelectedEnvironment() {
-        Environment selectedEnvironment;
         // Get selected environment
+        List  selectedEnvironments = environmentTable.getSelectionModel().getSelectedItems();
 
         // Delete selected environment
-        //this.mainApp.getListEnvironnement().remove(selectedEnvironment);
+        this.mainApp.getListEnvironnement().removeAll(selectedEnvironments);
+        
         // Save to file
         this.mainApp.saveDataToFile(this.file);
     }
@@ -118,7 +129,10 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     @FXML
     public void CRUDEnvironmentCompleted() {
+        // Save to file
         this.mainApp.saveDataToFile(this.file);
+        
+        // Change view
         this.mainApp.openView("view/MainView.fxml", "API Application");
     }
 
@@ -127,6 +141,7 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     @FXML
     public void CRUDEnvironmentCancel() {
+        // Change view
         this.mainApp.openView("view/MainView.fxml", "API Application");
     }
 
