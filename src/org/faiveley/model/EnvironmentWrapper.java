@@ -18,11 +18,21 @@ public class EnvironmentWrapper {
 
     private List<Environment> environments;
 
+    /**
+     * Get environment wrapper
+     * 
+     * @return  environment list
+     */
     @XmlElement(name = "environment")
     public List<Environment> getEnvironments() {
         return this.environments;
     }
 
+    /**
+     * Set environment wrapper
+     * 
+     * @param environments environment wrapper to set
+     */
     public void setEnvironments(List<Environment> environments) {
         this.environments = environments;
     }

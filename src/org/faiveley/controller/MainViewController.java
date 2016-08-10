@@ -11,7 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.faiveley.APIApplication;
 import org.faiveley.api.APIApplicationControler;
@@ -53,7 +53,7 @@ public class MainViewController implements Initializable {
 
     // Log area
     @FXML
-    private TextField logText;
+    private TextArea logText;
 
     // Connection buttons
     @FXML
@@ -185,6 +185,7 @@ public class MainViewController implements Initializable {
      */
     @FXML
     public void connectToM3() {
+
         // Get selected environment
         setSelectedEnvironment();
 
@@ -196,17 +197,36 @@ public class MainViewController implements Initializable {
                 this.selectedEnvironment.getPassword(),
                 true);
 
+        // Write in log text
+        this.logText.setText(
+                "Host : " + this.selectedEnvironment.getHost() + "\n"
+                + "Port : " + this.selectedEnvironment.getPort() + "\n"
+                + "User : " + this.selectedEnvironment.getLogin() + "\n\n");
+
         // Connect
         this.apiApplication = new APIApplicationControler(connector);
 
-        // Disable connection button
-        this.connectButton.setDisable(true);
+        // Test connection
+        if (this.apiApplication.isConnected()) {
+            // Log message
+            this.logText.appendText("Connected. \n");
+            
+            // Disable connection button
+            this.connectButton.setDisable(true);
 
-        // Enable disconnection button
-        this.disconnectButton.setDisable(false);
+            // Enable disconnection button
+            this.disconnectButton.setDisable(false);
 
-        setApiChoiceBox();
-        setTransactionChoiceBox();
+            // Set APIs
+            setApiChoiceBox();
+
+            // Set transactions
+            setTransactionChoiceBox();
+            
+        } else {
+            // Log message
+            this.logText.appendText("Failed to connect. \n");
+        }
     }
 
     /**

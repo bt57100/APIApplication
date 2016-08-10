@@ -4,7 +4,6 @@ import MvxAPI.MvxSockJ;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Control and retrieve information from M3 class
  *
@@ -19,6 +18,8 @@ public class APIApplicationControler {
     private static MvxSockJ MRS001Socket;
     // Connection information
     private final M3ApiConnector connector;
+    // Connection enable
+    private boolean connected;
     // API name
     private static String APIName;
 
@@ -31,15 +32,16 @@ public class APIApplicationControler {
         this.connector = m3ApiConnector;
         CreateMRS001Instance();
     }
-    
+
     /**
      * Set API name
+     *
      * @param APIName API selected
      */
     public void setApiName(String APIName) {
         APIApplicationControler.APIName = APIName;
     }
-    
+
     /**
      * Constructor with API name
      *
@@ -69,10 +71,15 @@ public class APIApplicationControler {
      * Connect to M3 MRS001MI
      */
     private void CreateMRS001Instance() {
-        MRS001Socket = new MvxSockJ(this.connector.getHost(), this.connector.getPort(), "", 0, "");
         int n;
+        // Connect
+        MRS001Socket = new MvxSockJ(this.connector.getHost(), this.connector.getPort(), "", 0, "");
+        this.connected = true;
+        
+        // Test connection
         if ((n = MRS001Socket.mvxInit("Host", this.connector.getUser(), this.connector.getPassword(), "MRS001MI")) > 0) {
             System.out.println("CreateMRS001Instance - mvxInit() returned " + n + " " + MRS001Socket.mvxGetLastError());
+            this.connected = false;
         }
     }
 
@@ -160,7 +167,7 @@ public class APIApplicationControler {
     /**
      * List all Transactions in Programs
      *
-     * @param loadOutputs  boolean to know if output should be loaded
+     * @param loadOutputs boolean to know if output should be loaded
      * @return transaction list for the current API
      */
     public List<APITransaction> LstTransactions(boolean loadOutputs) {
@@ -198,11 +205,23 @@ public class APIApplicationControler {
         // Return API transactions
         return transactions;
     }
-    
-    public void disconnectFromM3 () {
+
+    /**
+     * Disconnect from M3
+     */
+    public void disconnectFromM3() {
         MRS001Socket.mvxClose();
+        this.connected = false;
     }
-    
+
+    /**
+     * Is connected
+     *
+     * @return if connected
+     */
+    public boolean isConnected() {
+        return this.connected;
+    }
 }
 
 /* Location:           F:\JavaApplication.jar

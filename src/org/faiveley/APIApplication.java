@@ -40,7 +40,9 @@ public class APIApplication extends Application {
     // Primary stage
     private Stage primaryStage;
 
-    // Preferences
+    /**
+     * Get Preferences settings
+     */
     public Preferences prefs = Preferences.userNodeForPackage(APIApplication.class);
 
     // Environment list

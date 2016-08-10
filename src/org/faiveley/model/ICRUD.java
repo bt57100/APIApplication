@@ -9,15 +9,23 @@ package org.faiveley.model;
  * @author 813308
  */
 public interface ICRUD {
-    // Create a new object
+    /**
+     * Create a new object
+     */
     public void create();
     
-    // Read an object
+    /**
+     * Read an object
+     */
     public void read();
     
-    // Update an object
+    /**
+     * Update an object
+     */
     public void update();
     
-    // Delete an object
+    /**
+     * Delete an object
+     */
     public void delete();
 }
