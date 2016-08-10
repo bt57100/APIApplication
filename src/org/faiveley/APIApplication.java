@@ -36,7 +36,6 @@ import org.faiveley.model.EnvironmentWrapper;
  * @author 813308
  */
 public class APIApplication extends Application {
-
     // Primary stage
     private Stage primaryStage;
 
