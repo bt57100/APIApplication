@@ -3,7 +3,6 @@
  */
 package org.faiveley.controller;
 
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,7 +24,7 @@ import org.faiveley.model.Environment;
  * @author 813308
  */
 public class CRUDEnvironmentViewController implements Initializable {
-
+    // Main application
     private APIApplication mainApp;
 
     // Manage environment
@@ -47,20 +46,20 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     public CRUDEnvironmentViewController() {
     }
-    
+
     /**
      * Set mainApp and table view
-     * 
+     *
      * @param app API application to set
      */
     public void setMainApp(APIApplication app) {
-        // Set mainApp
+        // Set main application
         this.mainApp = app;
-        
+
         // Set table view
         this.environmentTable.setItems(mainApp.getListEnvironnement());
     }
-    
+
     /**
      * Initialize CRUDEnvironment view
      *
@@ -104,7 +103,7 @@ public class CRUDEnvironmentViewController implements Initializable {
         this.passwordCol.setOnEditCommit((CellEditEvent<Environment, String> changedPassword) -> {
             ((Environment) changedPassword.getTableView().getItems().get(changedPassword.getTablePosition().getRow())).setPassword(changedPassword.getNewValue());
         });
-        
+
         // Enable multiple selection
         this.environmentTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
@@ -123,11 +122,11 @@ public class CRUDEnvironmentViewController implements Initializable {
     @FXML
     public void deleteSelectedEnvironment() {
         // Get selected environment
-        List  selectedEnvironments = environmentTable.getSelectionModel().getSelectedItems();
+        List selectedEnvironments = environmentTable.getSelectionModel().getSelectedItems();
 
         // Delete selected environment
         this.mainApp.getListEnvironnement().removeAll(selectedEnvironments);
-        
+
     }
 
     /**
@@ -135,9 +134,10 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     @FXML
     public void CRUDEnvironmentCompleted() {
-        
-        // Change view
+        // Close environment manager
         this.mainApp.getPrimaryStage().close();
+
+        // Change to main view
         this.mainApp.openMainView();
     }
 
@@ -146,8 +146,10 @@ public class CRUDEnvironmentViewController implements Initializable {
      */
     @FXML
     public void CRUDEnvironmentCancel() {
-        // Change view
+        // Close environment manager
         this.mainApp.getPrimaryStage().close();
+
+        // Change to main view
         this.mainApp.openMainView();
     }
 

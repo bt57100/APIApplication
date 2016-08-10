@@ -36,16 +36,24 @@ public class AddEnvironmentViewController {
      */
     public AddEnvironmentViewController() {
     }
-    
+
     /**
-     * Set mainApp
-     * 
+     * Set mainApp and prompt texts
+     *
      * @param app API application to set
      */
     public void setMainApp(APIApplication app) {
+        // Set main app
         this.mainApp = app;
+
+        // Prompt texts
+        this.newName.setPromptText("Enter environment ID");
+        this.newHost.setPromptText("Enter IP address");
+        this.newPort.setPromptText("Enter port");
+        this.newLogin.setPromptText("Enter login");
+        this.newPassword.setPromptText("Enter password");
     }
-    
+
     /**
      * Save change Close CU environment view and open CRUD environment view
      */
@@ -53,9 +61,9 @@ public class AddEnvironmentViewController {
     public void CUEnvironmentCompleted() {
         // Charge
         this.mainApp.loadDataDirectory(this.file);
-        
+
         // Add new
-        if((!"".equals(this.newName.getText()))&&(!"".equals(this.newPort.getText()))) {
+        if ((!"".equals(this.newName.getText())) && (!"".equals(this.newPort.getText()))) {
             this.mainApp.getListEnvironnement().add(new Environment(
                     this.newName.getText(),
                     this.newHost.getText(),

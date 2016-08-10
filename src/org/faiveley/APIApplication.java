@@ -37,8 +37,13 @@ import org.faiveley.model.EnvironmentWrapper;
  */
 public class APIApplication extends Application {
 
+    // Primary stage
     private Stage primaryStage;
+
+    // Preferences
     public Preferences prefs = Preferences.userNodeForPackage(APIApplication.class);
+
+    // Environment list
     private final ObservableList<Environment> listEnvironment = FXCollections.observableArrayList();
 
     /**
@@ -76,9 +81,9 @@ public class APIApplication extends Application {
     }
 
     /**
-     * Get file from pref file path
+     * Get file from preference file path
      *
-     * @return file of pref file path
+     * @return file of preference file path
      */
     public File getDataDirectoryPath() {
         // Get file path from pref
@@ -93,7 +98,7 @@ public class APIApplication extends Application {
     }
 
     /**
-     * Set file path in pref
+     * Set file path in preference
      *
      * @param file file to get path from
      */
@@ -185,29 +190,35 @@ public class APIApplication extends Application {
     }
 
     /**
-     * Close current view and open a new one
-     *
+     * Open main view
      */
     public void openMainView() {
         try {
-            // Open new view
+            // Root layout view
             this.primaryStage = new Stage();
             this.primaryStage.setTitle("API Application");
             FXMLLoader loaderRoot = new FXMLLoader();
             loaderRoot.setLocation(APIApplication.class.getResource("view/RootLayout.fxml"));
             BorderPane rootLayout = loaderRoot.load();
             this.primaryStage.setScene(new Scene(rootLayout, 750, 500));
+
+            // Set root layout controller
             RootLayoutController rootController = loaderRoot.getController();
             rootController.setMainApp(this);
 
+            // Main view
             FXMLLoader loaderMain = new FXMLLoader();
             loaderMain.setLocation(APIApplication.class.getResource("view/MainView.fxml"));
             AnchorPane MainView = loaderMain.load();
+
+            // Set main view controller
             MainViewController mainController = loaderMain.getController();
             mainController.setMainApp(this);
 
+            // Add main view to root layout view
             rootLayout.setCenter(MainView);
 
+            // Display view
             this.primaryStage.show();
 
         } catch (IOException ex) {
@@ -215,20 +226,27 @@ public class APIApplication extends Application {
         }
     }
 
+    /**
+     * Close current view and open environment manager view
+     */
     public void openCRUDEnvironmentView() {
         try {
-
+            // Close current view
             this.primaryStage.close();
-            // Open new view
+
+            // Open environment manager view
             this.primaryStage = new Stage();
             this.primaryStage.setTitle("Environment Manager");
             FXMLLoader loaderCRUD = new FXMLLoader();
             loaderCRUD.setLocation(APIApplication.class.getResource("view/CRUDEnvironmentView.fxml"));
             VBox rootLayout = loaderCRUD.load();
             this.primaryStage.setScene(new Scene(rootLayout, 750, 500));
+
+            // Set environment manager view controller
             CRUDEnvironmentViewController CRUDEnvironmentController = loaderCRUD.getController();
             CRUDEnvironmentController.setMainApp(this);
 
+            // Display view
             this.primaryStage.show();
 
         } catch (IOException ex) {
@@ -236,21 +254,27 @@ public class APIApplication extends Application {
         }
     }
 
+    /**
+     * Close current view and open add environment view
+     */
     public void openAddEnvironmentView() {
         try {
-
+            // Close current view
             this.primaryStage.close();
 
-            // Open new view
+            // Open add environment view
             this.primaryStage = new Stage();
             this.primaryStage.setTitle("Update Environment");
             FXMLLoader loaderCRUD = new FXMLLoader();
             loaderCRUD.setLocation(APIApplication.class.getResource("view/AddEnvironmentView.fxml"));
             GridPane rootLayout = loaderCRUD.load();
             this.primaryStage.setScene(new Scene(rootLayout, 400, 400));
+
+            // Set add environment view controller
             AddEnvironmentViewController addEnvironmentController = loaderCRUD.getController();
             addEnvironmentController.setMainApp(this);
 
+            // Display view
             this.primaryStage.show();
 
         } catch (IOException ex) {

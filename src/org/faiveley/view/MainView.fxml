@@ -26,11 +26,12 @@
                </HBox.margin>
             </ChoiceBox>
             <!-- Control buttons -->
-            <Button fx:id="connectButtonId" mnemonicParsing="false" onAction="#connectToM3" text="Connect">
+            <Button fx:id="connectButton" mnemonicParsing="false" onAction="#connectToM3" text="Connect">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
+            <Button fx:id="disconnectButton" mnemonicParsing="false" onAction="#disconnectFromM3" text="Disconnect" />
             <Button fx:id="changeEnvironmentButton" mnemonicParsing="false" onAction="#changeEnvironment" text="...">
                <HBox.margin>
                   <Insets />
@@ -50,7 +51,7 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <ChoiceBox fx:id="api" prefHeight="25.0" prefWidth="100.0">
+            <ChoiceBox fx:id="apiList" prefHeight="25.0" prefWidth="100.0">
                <HBox.margin>
                   <Insets right="45.0" />
                </HBox.margin>
