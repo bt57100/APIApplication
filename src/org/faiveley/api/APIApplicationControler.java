@@ -31,6 +31,7 @@ public class APIApplicationControler {
     public APIApplicationControler(M3ApiConnector m3ApiConnector) {
         this.connector = m3ApiConnector;
         CreateMRS001Instance();
+        APIName = "";
     }
 
     /**
