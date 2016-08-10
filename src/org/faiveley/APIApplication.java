@@ -150,7 +150,7 @@ public class APIApplication extends Application {
     /**
      * Save data in file
      *
-     * @param file
+     * @param file File to save data to
      */
     public void saveDataToFile(File file) {
         try {
