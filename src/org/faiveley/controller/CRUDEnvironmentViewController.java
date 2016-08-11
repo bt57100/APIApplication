@@ -98,11 +98,11 @@ public class CRUDEnvironmentViewController implements Initializable {
         });
 
         // Password
-        this.passwordCol.setCellValueFactory(new PropertyValueFactory<>("password"));
+        /*this.passwordCol.setCellValueFactory(new PropertyValueFactory<>("password"));
         this.passwordCol.setCellFactory(TextFieldTableCell.forTableColumn());
         this.passwordCol.setOnEditCommit((CellEditEvent<Environment, String> changedPassword) -> {
             ((Environment) changedPassword.getTableView().getItems().get(changedPassword.getTablePosition().getRow())).setPassword(changedPassword.getNewValue());
-        });
+        });*/
 
         // Enable multiple selection
         this.environmentTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);

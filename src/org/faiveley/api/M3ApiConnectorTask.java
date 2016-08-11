@@ -3,13 +3,14 @@ package org.faiveley.api;
 import MvxAPI.MvxSockJ;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.concurrent.Task;
 
 /**
  * Control and retrieve information from M3 class
  *
  * @author 813308
  */
-public class APIApplicationControler {
+public class M3ApiConnectorTask extends Task<String> {
 
     /**
      * Control variables
@@ -17,21 +18,31 @@ public class APIApplicationControler {
     // Authorized connection to M3
     private static MvxSockJ MRS001Socket;
     // Connection information
-    private final M3ApiConnector connector;
+    private final M3ApiConnectorModel connector;
     // Connection enable
     private boolean connected;
     // API name
     private static String APIName;
+    // Error message
+    private String error;
 
     /**
      * Constructor, connection to M3 API
      *
      * @param m3ApiConnector M3 connection information
      */
-    public APIApplicationControler(M3ApiConnector m3ApiConnector) {
+    public M3ApiConnectorTask(M3ApiConnectorModel m3ApiConnector) {
         this.connector = m3ApiConnector;
-        CreateMRS001Instance();
         APIName = "";
+    }
+    
+    /**
+     * Get error message
+     * 
+     * @return error message
+     */
+    public String getError() {
+        return error;
     }
 
     /**
@@ -40,7 +51,7 @@ public class APIApplicationControler {
      * @param APIName API selected
      */
     public void setApiName(String APIName) {
-        APIApplicationControler.APIName = APIName;
+        M3ApiConnectorTask.APIName = APIName;
     }
 
     /**
@@ -49,9 +60,8 @@ public class APIApplicationControler {
      * @param m3ApiConnector M3 connection information
      * @param apiName API code
      */
-    public APIApplicationControler(M3ApiConnector m3ApiConnector, String apiName) {
+    public M3ApiConnectorTask(M3ApiConnectorModel m3ApiConnector, String apiName) {
         this.connector = m3ApiConnector;
-        CreateMRS001Instance();
         APIName = apiName;
     }
 
@@ -76,10 +86,10 @@ public class APIApplicationControler {
         // Connect
         MRS001Socket = new MvxSockJ(this.connector.getHost(), this.connector.getPort(), "", 0, "");
         this.connected = true;
-        
+
         // Test connection
         if ((n = MRS001Socket.mvxInit("Host", this.connector.getUser(), this.connector.getPassword(), "MRS001MI")) > 0) {
-            System.out.println("CreateMRS001Instance - mvxInit() returned " + n + " " + MRS001Socket.mvxGetLastError());
+            this.error = "CreateMRS001Instance - mvxInit() returned " + n + "\n" + MRS001Socket.mvxGetLastError();
             this.connected = false;
         }
     }
@@ -223,9 +233,35 @@ public class APIApplicationControler {
     public boolean isConnected() {
         return this.connected;
     }
-}
 
-/* Location:           F:\JavaApplication.jar
- * Qualified Name:     javaapplication.com.lttd.utils.ApiUtils
- * JD-Core Version:    0.6.2
- */
+    @Override
+    protected String call() throws Exception {
+        updateMessage("Connecting to M3...");
+        CreateMRS001Instance();
+        if (this.connected == true) {
+            updateMessage("Connection succeed.");
+            return "SUCCEEDED";
+        } else {
+            updateMessage("Connection failed.");
+            return "FAILED";
+        }
+    }
+
+    @Override
+    protected void succeeded() {
+        super.succeeded();
+            updateMessage("Connection succeed.");
+    }
+
+    @Override
+    protected void cancelled() {
+        super.cancelled();
+            updateMessage("Connection cancelled.");
+    }
+
+    @Override
+    protected void failed() {
+        super.failed();
+            updateMessage("Connection failed.");
+    }
+}

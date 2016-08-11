@@ -8,7 +8,7 @@
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="707.0" prefWidth="959.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.faiveley.controller.RootLayoutController">
+<BorderPane prefHeight="500" prefWidth="600" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.faiveley.controller.RootLayoutController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -81,7 +81,7 @@
                 </Menu>
             </menus>
             <BorderPane.margin>
-                <Insets top="30.0" />
+                <Insets />
             </BorderPane.margin>
         </MenuBar>
     </top>

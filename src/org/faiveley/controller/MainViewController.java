@@ -7,6 +7,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -14,10 +18,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.faiveley.APIApplication;
-import org.faiveley.api.APIApplicationControler;
+import org.faiveley.api.M3ApiConnectorTask;
 import org.faiveley.api.APITransaction;
 import org.faiveley.api.M3Api;
-import org.faiveley.api.M3ApiConnector;
+import org.faiveley.api.M3ApiConnectorModel;
 import org.faiveley.model.Environment;
 
 /**
@@ -31,7 +35,9 @@ public class MainViewController implements Initializable {
     private APIApplication mainApp;
 
     // M3 connection
-    APIApplicationControler apiApplication;
+    Service<String> serviceM3Connection;
+    private M3ApiConnectorModel connector;
+    private M3ApiConnectorTask apiApplication;
 
     // Environment
     private Environment selectedEnvironment;
@@ -185,63 +191,86 @@ public class MainViewController implements Initializable {
      */
     @FXML
     public void connectToM3() {
+        switch (connectButton.getText()) {
+            case "Connect":
+                // Reset log text
+                this.logText.setText("");
+                // Disable connection button
+                connectButton.setText("Cancel");
+                // Get selected environment
+                setSelectedEnvironment();
+                // Connector
+                this.connector = new M3ApiConnectorModel(
+                        this.selectedEnvironment.getHost(),
+                        this.selectedEnvironment.getPort(),
+                        this.selectedEnvironment.getLogin(),
+                        this.selectedEnvironment.getPassword(),
+                        true);
+                // Set M3 API connector
+                this.apiApplication = new M3ApiConnectorTask(connector);
+                // Service follow task connection
+                this.serviceM3Connection = new Service<String>() {
+                    @Override
+                    protected Task<String> createTask() {
+                        return apiApplication;
+                    }
+                };
+                // Bind logs to service message
+                this.logText.textProperty().bind(serviceM3Connection.messageProperty());
+                // If task succeed
+                serviceM3Connection.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                // If connection succeed
+                if (MainViewController.this.apiApplication.isConnected() == true) {
+                    // Disable connection button
+                    connectButton.setDisable(true);
+                    // Enable disconnection button
+                    disconnectButton.setDisable(false);
+                    // Set APIs
+                    setApiChoiceBox();
+                    // Set transactions
+                    setTransactionChoiceBox();
+                    // Disable connection button
+                    connectButton.setText("Disconnect");
+                    // Unbind and show in log text
+                    MainViewController.this.logText.textProperty().unbind();
+                } else {
+                    // Disable connection button
+                    connectButton.setDisable(false);
+                    // Disable connection button
+                    connectButton.setText("Connect");
+                    // Unbind and show in log text
+                    MainViewController.this.logText.textProperty().unbind();
+                    MainViewController.this.logText.appendText("\n" + MainViewController.this.apiApplication.getError());
+                }
+            }
+        });
+                // Start service
+                serviceM3Connection.restart();
 
-        // Get selected environment
-        setSelectedEnvironment();
+                break;
 
-        // Connector
-        M3ApiConnector connector = new M3ApiConnector(
-                this.selectedEnvironment.getHost(),
-                this.selectedEnvironment.getPort(),
-                this.selectedEnvironment.getLogin(),
-                this.selectedEnvironment.getPassword(),
-                true);
+            case "Cancel":
+                // Cancel service
+                serviceM3Connection.cancel();
+                // Unbind and show in log text
+                MainViewController.this.logText.textProperty().unbind();
+                // Disable connection button
+                connectButton.setText("Connect");
+                break;
 
-        // Write in log text
-        this.logText.setText(
-                "Host : " + this.selectedEnvironment.getHost() + "\n"
-                + "Port : " + this.selectedEnvironment.getPort() + "\n"
-                + "User : " + this.selectedEnvironment.getLogin() + "\n\n");
+            case "Disconnect":
+                // Disconnect from M3
+                this.apiApplication.disconnectFromM3();
+                // Disable connection button
+                this.disconnectButton.setDisable(true);
+                // Enable connection button
+                this.connectButton.setDisable(false);
+                break;
 
-        // Connect
-        this.apiApplication = new APIApplicationControler(connector);
-
-        // Test connection
-        if (this.apiApplication.isConnected()) {
-            // Log message
-            this.logText.appendText("Connected. \n");
-            
-            // Disable connection button
-            this.connectButton.setDisable(true);
-
-            // Enable disconnection button
-            this.disconnectButton.setDisable(false);
-
-            // Set APIs
-            setApiChoiceBox();
-
-            // Set transactions
-            setTransactionChoiceBox();
-            
-        } else {
-            // Log message
-            this.logText.appendText("Failed to connect. \n");
+            default:
+                break;
         }
     }
-
-    /**
-     * Disconnect to M3
-     */
-    @FXML
-    public void disconnectFromM3() {
-        // Disconnect from M3
-        this.apiApplication.disconnectFromM3();
-
-        // Disable connection button
-        this.disconnectButton.setDisable(true);
-
-        // Enable connection button
-        this.connectButton.setDisable(false);
-    }
-
 }

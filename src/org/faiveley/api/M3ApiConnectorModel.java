@@ -5,7 +5,7 @@ package org.faiveley.api;
  *
  * @author 813308
  */
-public class M3ApiConnector {
+public class M3ApiConnectorModel {
 
     /**
      * Connection variables
@@ -25,7 +25,7 @@ public class M3ApiConnector {
      * @param password M3 API password
      * @param loadOutputs M3 API if outputs have been loaded
      */
-    public M3ApiConnector(String host, int port, String user, String password, boolean loadOutputs) {
+    public M3ApiConnectorModel(String host, int port, String user, String password, boolean loadOutputs) {
         this.host = host;
         this.port = port;
         this.user = user;
@@ -124,8 +124,3 @@ public class M3ApiConnector {
     }
 
 }
-
-/* Location:           F:\JavaApplication.jar
- * Qualified Name:     javaapplication.com.lttd.beans.M3ApiConnector
- * JD-Core Version:    0.6.2
- */
