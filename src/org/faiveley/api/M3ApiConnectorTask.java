@@ -34,11 +34,26 @@ public class M3ApiConnectorTask extends Task<String> {
     public M3ApiConnectorTask(M3ApiConnectorModel m3ApiConnector) {
         this.connector = m3ApiConnector;
         APIName = "";
+        // Default not connected
+        this.connected = false;
     }
-    
+
+    /**
+     * Constructor with API name
+     *
+     * @param m3ApiConnector M3 connection information
+     * @param apiName API code
+     */
+    public M3ApiConnectorTask(M3ApiConnectorModel m3ApiConnector, String apiName) {
+        this.connector = m3ApiConnector;
+        APIName = apiName;
+        // Default not connected
+        this.connected = false;
+    }
+
     /**
      * Get error message
-     * 
+     *
      * @return error message
      */
     public String getError() {
@@ -52,17 +67,6 @@ public class M3ApiConnectorTask extends Task<String> {
      */
     public void setApiName(String APIName) {
         M3ApiConnectorTask.APIName = APIName;
-    }
-
-    /**
-     * Constructor with API name
-     *
-     * @param m3ApiConnector M3 connection information
-     * @param apiName API code
-     */
-    public M3ApiConnectorTask(M3ApiConnectorModel m3ApiConnector, String apiName) {
-        this.connector = m3ApiConnector;
-        APIName = apiName;
     }
 
     /**
@@ -84,9 +88,10 @@ public class M3ApiConnectorTask extends Task<String> {
     private void CreateMRS001Instance() {
         int n;
         // Connect
-        MRS001Socket = new MvxSockJ(this.connector.getHost(), this.connector.getPort(), "", 0, "");
-        this.connected = true;
-
+        if ((!this.connector.getHost().equals("")) && (this.connector.getPort() != 0)) {
+            MRS001Socket = new MvxSockJ(this.connector.getHost(), this.connector.getPort(), "", 0, "");
+            this.connected = true;
+        }
         // Test connection
         if ((n = MRS001Socket.mvxInit("Host", this.connector.getUser(), this.connector.getPassword(), "MRS001MI")) > 0) {
             this.error = "CreateMRS001Instance - mvxInit() returned " + n + "\n" + MRS001Socket.mvxGetLastError();
@@ -187,9 +192,6 @@ public class M3ApiConnectorTask extends Task<String> {
         // API transaction list variable
         List<APITransaction> transactions = new ArrayList<>();
 
-        // Connection to MRS001
-        CreateMRS001Instance();
-
         // Set API name
         MRS001Socket.mvxSetField("MINM", APIName);
         // If cannot access, print error
@@ -240,6 +242,7 @@ public class M3ApiConnectorTask extends Task<String> {
         CreateMRS001Instance();
         if (this.connected == true) {
             updateMessage("Connection succeed.");
+
             return "SUCCEEDED";
         } else {
             updateMessage("Connection failed.");
@@ -250,18 +253,18 @@ public class M3ApiConnectorTask extends Task<String> {
     @Override
     protected void succeeded() {
         super.succeeded();
-            updateMessage("Connection succeed.");
+        updateMessage("Connection succeed.");
     }
 
     @Override
     protected void cancelled() {
         super.cancelled();
-            updateMessage("Connection cancelled.");
+        updateMessage("Connection cancelled.");
     }
 
     @Override
     protected void failed() {
         super.failed();
-            updateMessage("Connection failed.");
+        updateMessage("Connection failed.");
     }
 }
