@@ -10,7 +10,6 @@ import java.util.ResourceBundle;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -218,34 +217,31 @@ public class MainViewController implements Initializable {
                 // Bind logs to service message
                 this.logText.textProperty().bind(serviceM3Connection.messageProperty());
                 // If task succeed
-                serviceM3Connection.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
-                // If connection succeed
-                if (MainViewController.this.apiApplication.isConnected() == true) {
-                    // Disable connection button
-                    connectButton.setDisable(true);
-                    // Enable disconnection button
-                    disconnectButton.setDisable(false);
-                    // Set APIs
-                    setApiChoiceBox();
-                    // Set transactions
-                    setTransactionChoiceBox();
-                    // Disable connection button
-                    connectButton.setText("Disconnect");
-                    // Unbind and show in log text
-                    MainViewController.this.logText.textProperty().unbind();
-                } else {
-                    // Disable connection button
-                    connectButton.setDisable(false);
-                    // Disable connection button
-                    connectButton.setText("Connect");
-                    // Unbind and show in log text
-                    MainViewController.this.logText.textProperty().unbind();
-                    MainViewController.this.logText.appendText("\n" + MainViewController.this.apiApplication.getError());
-                }
-            }
-        });
+                serviceM3Connection.setOnSucceeded((WorkerStateEvent event) -> {
+                    // If connection succeed
+                    if (MainViewController.this.apiApplication.isConnected() == true) {
+                        // Disable connection button
+                        connectButton.setDisable(true);
+                        // Enable disconnection button
+                        disconnectButton.setDisable(false);
+                        // Set APIs
+                        setApiChoiceBox();
+                        // Set transactions
+                        setTransactionChoiceBox();
+                        // Disable connection button
+                        connectButton.setText("Disconnect");
+                        // Unbind and show in log text
+                        MainViewController.this.logText.textProperty().unbind();
+                    } else {
+                        // Disable connection button
+                        connectButton.setDisable(false);
+                        // Disable connection button
+                        connectButton.setText("Connect");
+                        // Unbind and show in log text
+                        MainViewController.this.logText.textProperty().unbind();
+                        MainViewController.this.logText.appendText("\n" + MainViewController.this.apiApplication.getError());
+                    }
+                });
                 // Start service
                 serviceM3Connection.restart();
 
@@ -263,6 +259,8 @@ public class MainViewController implements Initializable {
             case "Disconnect":
                 // Disconnect from M3
                 this.apiApplication.disconnectFromM3();
+                // Unbind and show in log text
+                MainViewController.this.logText.textProperty().unbind();
                 // Disable connection button
                 this.disconnectButton.setDisable(true);
                 // Enable connection button
