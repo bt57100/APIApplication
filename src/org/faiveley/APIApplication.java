@@ -201,7 +201,7 @@ public class APIApplication extends Application {
             FXMLLoader loaderRoot = new FXMLLoader();
             loaderRoot.setLocation(APIApplication.class.getResource("view/RootLayout.fxml"));
             BorderPane rootLayout = loaderRoot.load();
-            this.primaryStage.setScene(new Scene(rootLayout, 750, 500));
+            this.primaryStage.setScene(new Scene(rootLayout, 800, 500));
 
             // Set root layout controller
             RootLayoutController rootController = loaderRoot.getController();
@@ -241,7 +241,7 @@ public class APIApplication extends Application {
             FXMLLoader loaderCRUD = new FXMLLoader();
             loaderCRUD.setLocation(APIApplication.class.getResource("view/CRUDEnvironmentView.fxml"));
             VBox rootLayout = loaderCRUD.load();
-            this.primaryStage.setScene(new Scene(rootLayout, 750, 500));
+            this.primaryStage.setScene(new Scene(rootLayout, 600, 400));
 
             // Set environment manager view controller
             CRUDEnvironmentViewController CRUDEnvironmentController = loaderCRUD.getController();
@@ -269,7 +269,7 @@ public class APIApplication extends Application {
             FXMLLoader loaderCRUD = new FXMLLoader();
             loaderCRUD.setLocation(APIApplication.class.getResource("view/AddEnvironmentView.fxml"));
             GridPane rootLayout = loaderCRUD.load();
-            this.primaryStage.setScene(new Scene(rootLayout, 400, 400));
+            this.primaryStage.setScene(new Scene(rootLayout, 350, 350));
 
             // Set add environment view controller
             AddEnvironmentViewController addEnvironmentController = loaderCRUD.getController();

@@ -7,11 +7,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="mainView" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.faiveley.controller.MainViewController">
+<AnchorPane id="AnchorPane" fx:id="mainView" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.faiveley.controller.MainViewController">
    <children>
        
        <!-- Environment pane -->
-      <HBox fx:id="connectionPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="600.0" spacing="25.0" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="15.0">
+      <HBox fx:id="connectionPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="800.0" spacing="25.0" AnchorPane.topAnchor="15.0">
          <children>
              
              <!-- Environments -->
@@ -41,7 +41,7 @@
       </HBox>
       
       <!-- API/Transactions pane -->
-      <HBox fx:id="apisTransactionsPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="600.0" spacing="20.0" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="70.0">
+      <HBox fx:id="apisTransactionsPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="800.0" spacing="20.0" AnchorPane.topAnchor="70.0">
          <children>
              
              <!-- APIs -->
@@ -72,12 +72,13 @@
       </HBox>
       
       <!-- Dynamic pane -->
-      <StackPane fx:id="entriesPane" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="220.0" prefWidth="280.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="375.0" AnchorPane.topAnchor="150.0">
+      <StackPane fx:id="entriesPane" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="220.0" prefWidth="350.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="150.0">
          <children>
-         </children></StackPane>
+         </children>
+      </StackPane>
 
       <!-- Log pane -->
-      <StackPane fx:id="logPane" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="220.0" prefWidth="300.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="425.0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="150.0">
+      <StackPane fx:id="logPane" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="220.0" prefWidth="350.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="150.0">
          <children>
              
              <!-- Logs -->

@@ -3,7 +3,6 @@
  */
 package org.faiveley.controller;
 
-import java.io.File;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import org.faiveley.APIApplication;
@@ -46,9 +45,9 @@ public class AddEnvironmentViewController {
         this.mainApp = app;
 
         // Prompt texts
-        this.newName.setPromptText("Enter environment ID");
-        this.newHost.setPromptText("Enter IP address");
-        this.newPort.setPromptText("Enter port");
+        this.newName.setPromptText("Enter environment ID (required)");
+        this.newHost.setPromptText("Enter IP address (required)");
+        this.newPort.setPromptText("Enter port (required)");
         this.newLogin.setPromptText("Enter login");
         this.newPassword.setPromptText("Enter password");
     }
@@ -60,7 +59,7 @@ public class AddEnvironmentViewController {
     public void CUEnvironmentCompleted() {
 
         // Add new
-        if ((!"".equals(this.newName.getText())) && (!"".equals(this.newPort.getText()))) {
+        if ((!"".equals(this.newName.getText())) && (!"".equals(this.newHost.getText())) && (!"".equals(this.newPort.getText()))) {
             this.mainApp.getListEnvironnement().add(new Environment(
                     this.newName.getText(),
                     this.newHost.getText(),
