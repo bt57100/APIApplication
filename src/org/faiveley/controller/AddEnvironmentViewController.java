@@ -16,7 +16,6 @@ import org.faiveley.model.Environment;
  */
 public class AddEnvironmentViewController {
 
-    File file;
     APIApplication mainApp;
 
     // Create Update environment
@@ -59,8 +58,6 @@ public class AddEnvironmentViewController {
      */
     @FXML
     public void CUEnvironmentCompleted() {
-        // Charge
-        this.mainApp.loadDataDirectory(this.file);
 
         // Add new
         if ((!"".equals(this.newName.getText())) && (!"".equals(this.newPort.getText()))) {
@@ -72,9 +69,6 @@ public class AddEnvironmentViewController {
                     this.newPassword.getText())
             );
         }
-
-        // Save
-        this.mainApp.saveDataToFile(this.file);
 
         // Change view
         this.mainApp.openCRUDEnvironmentView();

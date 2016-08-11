@@ -36,7 +36,7 @@ public class MainViewController implements Initializable {
     // M3 connection
     Service<String> serviceM3Connection;
     private M3ApiConnectorModel connector;
-    private M3ApiConnectorTask apiApplication;
+    private M3ApiConnectorTask apiConnector;
 
     // Environment
     private Environment selectedEnvironment;
@@ -60,11 +60,9 @@ public class MainViewController implements Initializable {
     @FXML
     private TextArea logText;
 
-    // Connection buttons
+    // Connection Disconnect Cancel button
     @FXML
     private Button connectButton;
-    @FXML
-    private Button disconnectButton;
 
     /**
      * Constructor
@@ -137,7 +135,7 @@ public class MainViewController implements Initializable {
         for (int i = 0; i < this.apis.size(); i++) {
             if (this.apiList.getSelectionModel().getSelectedItem().equals(this.apis.get(i).getName())) {
                 this.selectedApi = this.apis.get(i);
-                this.apiApplication.setApiName(this.selectedApi.getName());
+                this.apiConnector.setApiName(this.selectedApi.getName());
             }
         }
     }
@@ -158,7 +156,7 @@ public class MainViewController implements Initializable {
      */
     public void setApiChoiceBox() {
         // Get APIs from M3 database
-        this.apis.addAll(this.apiApplication.LstPrograms());
+        this.apis.addAll(this.apiConnector.LstPrograms());
 
         // Set API name in choice box
         this.apis.stream().forEach((currentApi) -> {
@@ -174,7 +172,7 @@ public class MainViewController implements Initializable {
      */
     public void setTransactionChoiceBox() {
         // Get transactions from M3 database
-        this.transactions.addAll(this.apiApplication.LstTransactions(true));
+        this.transactions.addAll(this.apiConnector.LstTransactions(true));
 
         // Set ransaction name in choice box
         this.transactions.stream().forEach((currentTransaction) -> {
@@ -191,6 +189,7 @@ public class MainViewController implements Initializable {
     @FXML
     public void connectToM3() {
         switch (connectButton.getText()) {
+            // Case button "Connect"
             case "Connect":
                 // Reset log text
                 this.logText.setText("");
@@ -206,12 +205,12 @@ public class MainViewController implements Initializable {
                         this.selectedEnvironment.getPassword(),
                         true);
                 // Set M3 API connector
-                this.apiApplication = new M3ApiConnectorTask(connector);
+                this.apiConnector = new M3ApiConnectorTask(connector);
                 // Service follow task connection
                 this.serviceM3Connection = new Service<String>() {
                     @Override
                     protected Task<String> createTask() {
-                        return apiApplication;
+                        return apiConnector;
                     }
                 };
                 // Bind logs to service message
@@ -219,11 +218,9 @@ public class MainViewController implements Initializable {
                 // If task succeed
                 serviceM3Connection.setOnSucceeded((WorkerStateEvent event) -> {
                     // If connection succeed
-                    if (MainViewController.this.apiApplication.isConnected() == true) {
+                    if (MainViewController.this.apiConnector.isConnected() == true) {
                         // Disable connection button
                         connectButton.setDisable(true);
-                        // Enable disconnection button
-                        disconnectButton.setDisable(false);
                         // Set APIs
                         setApiChoiceBox();
                         // Set transactions
@@ -239,7 +236,7 @@ public class MainViewController implements Initializable {
                         connectButton.setText("Connect");
                         // Unbind and show in log text
                         MainViewController.this.logText.textProperty().unbind();
-                        MainViewController.this.logText.appendText("\n" + MainViewController.this.apiApplication.getError());
+                        MainViewController.this.logText.appendText("\n" + MainViewController.this.apiConnector.getError());
                     }
                 });
                 // Start service
@@ -247,6 +244,7 @@ public class MainViewController implements Initializable {
 
                 break;
 
+            // Case button "Cancel"
             case "Cancel":
                 // Cancel service
                 serviceM3Connection.cancel();
@@ -256,13 +254,12 @@ public class MainViewController implements Initializable {
                 connectButton.setText("Connect");
                 break;
 
+            // Case button "Disconnect"
             case "Disconnect":
                 // Disconnect from M3
-                this.apiApplication.disconnectFromM3();
+                this.apiConnector.disconnectFromM3();
                 // Unbind and show in log text
                 MainViewController.this.logText.textProperty().unbind();
-                // Disable connection button
-                this.disconnectButton.setDisable(true);
                 // Enable connection button
                 this.connectButton.setDisable(false);
                 break;
