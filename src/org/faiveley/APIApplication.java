@@ -1,5 +1,5 @@
 /*
- * Faiveley Transport License
+ * Faiveley Transport License test
  */
 package org.faiveley;
 
