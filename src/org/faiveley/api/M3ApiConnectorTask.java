@@ -100,7 +100,7 @@ public class M3ApiConnectorTask extends Task<String> {
     }
 
     /**
-     * List all API information in MRS001MI
+     * List all API field in MRS001MI
      *
      * @param transaction transaction name
      * @param inOut M3 properties to be set
@@ -253,7 +253,6 @@ public class M3ApiConnectorTask extends Task<String> {
     @Override
     protected void succeeded() {
         super.succeeded();
-        updateMessage("Connection succeed.");
     }
 
     @Override
