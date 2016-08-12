@@ -131,8 +131,3 @@ public class APITransaction {
     }
 
 }
-
-/* Location:           F:\JavaApplication.jar
- * Qualified Name:     javaapplication.com.lttd.beans.APITransaction
- * JD-Core Version:    0.6.2
- */

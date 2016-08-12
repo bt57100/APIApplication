@@ -125,8 +125,3 @@ public class M3Api {
     }
 
 }
-
-/* Location:           F:\JavaApplication.jar
- * Qualified Name:     javaapplication.com.lttd.beans.M3Api
- * JD-Core Version:    0.6.2
- */
