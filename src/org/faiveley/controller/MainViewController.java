@@ -228,11 +228,8 @@ public class MainViewController implements Initializable {
                             MainViewController.this.logText.appendText(MainViewController.this.selectedApi.getName() + " selected \n");
                             // Set transactions
                             setTransactionChoiceBox();
-
-                            /**
-                             * TO DO what append when transaction selected
-                             */
-                            
+                            // Perform transactions
+                            transactionPerformed();
                             // Change connection button
                             connectButton.setText("Disconnect");
                         } else {
@@ -301,5 +298,14 @@ public class MainViewController implements Initializable {
         };
         // Bind logs to service message
         this.logText.textProperty().bind(serviceM3Connection.messageProperty());
+    }
+
+    /**
+     * Transaction performed
+     */
+    public void transactionPerformed() {
+        /**
+         * TO DO what append when transaction selected
+         */
     }
 }

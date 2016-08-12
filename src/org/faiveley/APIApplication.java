@@ -319,5 +319,4 @@ public class APIApplication extends Application {
         // Launch application
         Application.launch(APIApplication.class, (java.lang.String[]) null);
     }
-
 }
