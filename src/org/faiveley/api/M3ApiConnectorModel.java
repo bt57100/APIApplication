@@ -1,5 +1,7 @@
 package org.faiveley.api;
 
+import org.faiveley.model.Environment;
+
 /**
  * Model connection information for M3 API class
  *
@@ -16,6 +18,10 @@ public class M3ApiConnectorModel {
     private String password;
     private boolean loadOutputs;
 
+    public M3ApiConnectorModel(Environment env, boolean loadOutputs) {
+        this(env.getHost(), env.getPort(), env.getLogin(), env.getPassword(), loadOutputs);
+    }
+    
     /**
      * Constructor
      *

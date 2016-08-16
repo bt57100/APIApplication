@@ -39,11 +39,9 @@ public class MainViewController implements Initializable {
     private M3ApiConnectorModel connector;
     private M3ApiConnectorTask apiConnector;
 
-    // Environment
-    private Environment selectedEnvironment;
     private final List<Environment> environments;
     @FXML
-    private ChoiceBox<String> environmentList;
+    private ChoiceBox<Environment> environmentList;
 
     // API
     private M3Api selectedApi;
@@ -85,10 +83,7 @@ public class MainViewController implements Initializable {
         this.mainApp = app;
 
         // Set environment to choice box
-        this.environments.addAll(this.mainApp.getListEnvironnement());
-        this.environments.stream().forEach((environment) -> {
-            this.environmentList.getItems().add(environment.getName());
-        });
+        this.environmentList.setItems(this.mainApp.getListEnvironnement());
 
         // Hide API bar
         this.apisTransactionsPane.setVisible(false);
@@ -122,18 +117,6 @@ public class MainViewController implements Initializable {
         this.mainApp.openCRUDEnvironmentView();
     }
 
-    /**
-     * Set selected environment
-     */
-    public void setSelectedEnvironment() {
-        if (!this.environmentList.getSelectionModel().isEmpty()) {
-            for (int i = 0; i < this.environments.size(); i++) {
-                if (this.environmentList.getSelectionModel().getSelectedItem().equals(this.environments.get(i).getName())) {
-                    this.selectedEnvironment = this.environments.get(i);
-                }
-            }
-        }
-    }
 
     /**
      * Set selected API
@@ -210,8 +193,8 @@ public class MainViewController implements Initializable {
                     serviceM3Connection.setOnFailed((WorkerStateEvent event) -> {
                         // Change connection button
                         connectButton.setText("Connect");
-                        // Unbind and show in log text
-                        MainViewController.this.logText.textProperty().unbind();
+                        // Unbind and show in log text   MainViewController.this.logText.textProperty().unbind();
+                     
                         MainViewController.this.logText.appendText("Server may not be available. Try again later.\n");
                     });
 
@@ -279,15 +262,14 @@ public class MainViewController implements Initializable {
         // Change connection button
         connectButton.setText("Cancel");
         // Get selected environment
-        setSelectedEnvironment();
         // Connector
-        this.connector = new M3ApiConnectorModel(
-                this.selectedEnvironment.getHost(),
-                this.selectedEnvironment.getPort(),
-                this.selectedEnvironment.getLogin(),
-                this.selectedEnvironment.getPassword(),
-                true);
-        // Set M3 API connector
+//        this.connector = new M3ApiConnectorModel(
+//                this.selectedEnvironment.getHost(),
+//                this.selectedEnvironment.getPort(),
+//                this.selectedEnvironment.getLogin(),
+//                this.selectedEnvironment.getPassword(),
+//                true);
+        this.connector = new M3ApiConnectorModel(this.environmentList.getSelectionModel().getSelectedItem(), true);        // Set M3 API connector
         this.apiConnector = new M3ApiConnectorTask(connector);
         // Service follow task connection
         this.serviceM3Connection = new Service<String>() {

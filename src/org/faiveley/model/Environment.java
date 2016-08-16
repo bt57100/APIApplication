@@ -172,4 +172,9 @@ public class Environment extends AbstractCRUD {
         this.login = "";
         this.password = "";
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
